@@ -1,16 +1,17 @@
-import allClocks.BRLClock;
-import allClocks.Clock;
-import allClocks.USClock;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        Clock brlClock = new BRLClock();
-        brlClock.setSecond(0); 
-        brlClock.setMinute(0);
-        brlClock.setHour(25);
 
-        System.out.println(brlClock.getTime());
+        runMusic(new Computer());
+        runVideo(new Computer());
 
-        System.out.println(new USClock().convert(brlClock).getTime());
+    }
+
+    public static void runVideo(VideoPlayer videoPlayer) {
+        videoPlayer.playVideo();
+    }
+
+    public static void runMusic(MusicPlayer musicPlayer) {
+        musicPlayer.playMusic();
     }
 }
