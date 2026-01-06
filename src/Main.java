@@ -1,22 +1,20 @@
-import java.time.Duration;
-import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import domain.User;
 
 public class Main {
     public static void main(String[] args) {
-        var arrayStart = OffsetDateTime.now();
-        List<Integer> arrayList = new ArrayList<>();
-        for (int i = 0; i < 100_000_000; i++) {
-            arrayList.add(i);
-        }
-        System.out.println(Duration.between(arrayStart, OffsetDateTime.now()).toMillis());
-        var vectorStart = OffsetDateTime.now();
-        List<Integer> Vector = new ArrayList<>();
-        for (int i = 0; i < 100_000_000; i++) {
-            Vector.add(i);
-        }
-        System.out.println(Duration.between(vectorStart,OffsetDateTime.now()).toMillis());
+        Map<String, User> users = new LinkedHashMap<>();
+        users.put("joao@joao.com", new User("joao", 22));
+        users.put("maria@maria.com", new User("Maria", 32));
+        users.put("juca@juca.com", new User("Juca", 18));
+        users.put("leo@leo.com", new User("Leo", 48));
+
+        users.merge("leo@leo.com", new User("", -1), (user, user2) -> {
+            System.out.println(user);
+            System.out.println(user2);
+            return user2;
+        });
+        System.out.println(users);
     }
 }
