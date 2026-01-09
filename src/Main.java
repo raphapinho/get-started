@@ -1,42 +1,27 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.file.OpenOption;
+import java.util.Arrays;
+import java.util.Scanner;
+
+import br.com.dio.calc.Operation;
 
 public class Main {
-    private static List<Integer> numbers = new ArrayList<>();
-
-    private static void inc(int number) {
-        synchronized (numbers) {
-            numbers.add(number);
-        }
-    }
-
-    private static void show(){
-        synchronized (numbers) {
-            System.out.println(numbers);
-        }
-    }
 
     public static void main(String[] args) {
-        Runnable inc = () -> {
-            for(int i = 0; i < 100_000; i++) {
-                inc(i);
-            }
-        };
-        Runnable dec = () -> {
-            for(int i = 100_000; i > 0; i--) {
-                inc(i);
-            }
-        };
-
-        Runnable show = () -> {
-            for (int i = 0; i < 250_000; i++) {
-                show();
-            }
-        };
-        new Thread(inc).start();
-        new Thread(dec).start();
-        new Thread(show).start();
+        var scanner = new Scanner(System.in);
+        System.out.println("Informe a ooperação que deseja realizar(1 - sum, 2- subtraction)");
+        var operationOption = scanner.nextInt();
+        while (operationOption > 2 || operationOption < 1) {
+            System.out.println("Escolha uma opção valida(1 - sum, 2- subtraction)");
+            operationOption = scanner.nextInt();
+        }
+        var selectedOperation = Operation.values()[operationOption - 1];
+        System.out.println("Informe os números que serão usados separados por vírgula (ex: 1,2,3,4)");
+        var number = scanner.next();
+        var numberArray = Arrays.stream(number.split(","))
+                                .mapToLong(s -> Long.parseLong(s))
+                                .toArray();
+        var result = selectedOperation.getOperationCallback().exec(numberArray);
+        var operationToShow = number.replaceAll(",", " " + selectedOperation.getSignal() + " ");
+        System.out.printf("O resultado da operação é %s = %s1\n", operationToShow,result);
     }
-
 }
-
